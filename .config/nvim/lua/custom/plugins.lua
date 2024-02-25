@@ -1,9 +1,16 @@
 local plugins = {
+  -- {
+  --   "mhartington/formatter.nvim",
+  --   event = "VeryLazy",
+  --   opts = function ()
+  --     return require "custom.configs.formatter"
+  --   end
+  -- },
   {
-    "mhartington/formatter.nvim",
+    "nvimtools/none-ls.nvim",
     event = "VeryLazy",
     opts = function ()
-      return require "custom.configs.formatter"
+      return require "custom.configs.null-ls"
     end
   },
   {
@@ -35,6 +42,7 @@ local plugins = {
    "williamboman/mason.nvim",
    opts = {
       ensure_installed = {
+        "eslint-lsp",
         "gopls",
         "elixir-ls",
         "svelte-language-server",
@@ -45,11 +53,18 @@ local plugins = {
         "typescript-language-server",
         "tailwindcss-language-server",
         "vue-language-server",
-        "prettier",
+        "prettierd",
         "stylua"
       },
     },
-  }
+  },
+   {
+    "windwp/nvim-ts-autotag",
+    ft = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
 }
 
 return plugins

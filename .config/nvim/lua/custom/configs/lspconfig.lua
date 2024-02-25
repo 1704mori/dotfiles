@@ -3,7 +3,7 @@ local on_attach = configs.on_attach
 local capabilities = configs.capabilities
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "clangd", "tsserver", "gopls",  "volar", "svelte", "elixirls" }
+local servers = { "html", "cssls", "clangd", "tsserver", "gopls",  "volar", "svelte", "elixirls", "tailwindcss" }
 
 local util = require "lspconfig/util"
 
@@ -40,6 +40,10 @@ for _, lsp in ipairs(servers) do
 
   if lsp == "tsserver" then
     lsp_config.filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
+  end
+
+  if lsp == "svelte" then
+    lsp_config.filetypes = { "svelte" }
   end
 
   if lsp == "elixirls" then
