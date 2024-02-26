@@ -44,6 +44,7 @@ for _, lsp in ipairs(servers) do
 
   if lsp == "svelte" then
     lsp_config.filetypes = { "svelte" }
+    lsp_config.root_dir = util.root_pattern("svelte.config.js")
   end
 
   if lsp == "elixirls" then
