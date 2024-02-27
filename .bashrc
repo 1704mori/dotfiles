@@ -133,7 +133,7 @@ export HISTFILESIZE=5000000
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=${PATH}:`go env GOPATH`/bin
-export TERM=ansi
+#export TERM=ansi
 # export QT_SELECT=4
 
 # Enable history appending instead of overwriting.  #139609
