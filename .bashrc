@@ -91,14 +91,7 @@ fi
 
 unset use_color safe_term match_lhs sh
 
-# alias functions
-dtags () {
-  local image="${1}"
-
-  curl --silent \
-    "https://registry.hub.docker.com/v2/repositories/library/${image}/tags?page_size=1000" \
-    | jq -r ".results[].name" | sort --version-sort
-}
+# random functions
 
 video2gif() {
   ffmpeg -y -i "${1}" -vf fps=${3:-10},scale=${2:-320}:-1:flags=lanczos,palettegen "${1}.png"
@@ -111,12 +104,53 @@ video2gif() {
 #alias free='free -m'                      # show sizes in MB
 #alias np='nano -w PKGBUILD'
 #alias more=less
+
+# docker aliases
+
+dtags () {
+  local image="${1}"
+
+  curl --silent \
+    "https://registry.hub.docker.com/v2/repositories/library/${image}/tags?page_size=1000" \
+    | jq -r ".results[].name" | sort --version-sort
+}
+
 alias dkps="docker ps --format 'table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}\t{{.Ports}}'"
 alias dklf="docker logs -f"
 alias dkc="docker compose"
 alias dks="docker stats --format 'table {{.Name}}\t{{.Container}}\t{{.CPUPerc}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}'"
 alias dkt="dtags"
 alias dkip="docker inspect $(docker ps -q) --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | sort -t . -n -k 4,4"
+
+# yt-dlp aliases
+get_playlist_title() {
+  local id=$1
+  local title=$(yt-dlp "https://youtube.com/playlist?list=$id" --flat-playlist --dump-single-json | jq -r .title)
+  echo $title
+}
+
+download_playlist() {
+  local id=$1
+
+  if [ -z "$id" ]; then
+    echo "Usage: ytpl <playlist_id>"
+    return
+  fi
+
+  local title=$(get_playlist_title $id)
+  local output="/home/mori/musics/$title"
+  local command="yt-dlp -f bestaudio[ext=m4a] --output \"$output/%(title)s.%(ext)s\" --download-archive /home/mori/musics/_archive --break-on-reject --break-per-input https://www.youtube.com/playlist?list=$id"
+  echo $command
+}
+
+alias ytpl="download_playlist"
+
+# curl aliases
+
+alias cpost="curl -X POST -H 'Content-Type: application/json' -d @-"
+alias cget="curl -X GET"
+alias cput="curl -X PUT -H 'Content-Type: application/json' -d @-"
+alias cdel="curl -X DELETE -H 'Content-Type: application/json'"
 
 xhost +local:root > /dev/null 2>&1
 
