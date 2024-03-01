@@ -140,7 +140,7 @@ download_playlist() {
   local title=$(get_playlist_title $id)
   local output="/home/mori/musics/$title"
   local command="yt-dlp -f bestaudio[ext=m4a] --output \"$output/%(title)s.%(ext)s\" --download-archive /home/mori/musics/_archive --break-on-reject --break-per-input https://www.youtube.com/playlist?list=$id"
-  echo $command
+  eval "($command)"
 }
 
 alias ytpl="download_playlist"
