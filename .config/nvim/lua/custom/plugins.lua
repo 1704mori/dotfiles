@@ -7,6 +7,10 @@ local plugins = {
   --   end
   -- },
   {
+    "kdheepak/lazygit.nvim",
+    lazy = false
+  },
+  {
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
     opts = function ()
